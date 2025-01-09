@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <icon>
+        
+    </icon>
+    <style>
+        #heading{
+            text-align: center;
+        }
+        body{
+            color:aliceblue;
+            background-color: rgb(0, 0, 0);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: large;
+            height: auto;
+            width: auto;
+        }
+        .button-icon{
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background-color: rgb(0, 0, 0);
+            padding: 25px ;
+            margin-right:10px;
+            border: none;
+            border: 3px solid white;
+            cursor: pointer;
+        }
+        .move-icon{
+            height: 60px;
+            width:60px;
+            size: 50px;
+        }
+        
+        #resetButton{
+            position: relative;
+            font-size: 15px;
+            padding: 10px 15px;
+            font-weight: bold;
+            border: none ;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 25px;
+        }
+        .gameResult{
+            font-style: italic;
+            text-transform: capitalize;
+            font-size: 25px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+        .gameResult{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="heading">ROCK PAPER SCISSORS GAME</h1>
+    </div>
+    <div class="imagesdiv">
+        <button class="button-icon"  onclick = " moveCheck(choices[0]);">
+            <img src="images/rock-emoji.png" alt="Rock-Image" class = 'move-icon'>
+        </button>
+        <button class="button-icon icons" onclick = " moveCheck(choices[1]);">
+            <img src="images/paper-emoji.png" alt="Paper-Image" class = 'move-icon'>
+        </button>
+        <button class="button-icon icons" onclick = " moveCheck(choices[2]);">
+            <img src="images/scissors-emoji.png" alt="Scissor-Image" class = 'move-icon'>
+        </button>
+    </div>
+    <div class=" gameResult">
+        <p class = "gameResult" id= "result">
+
+        </p>
+        <p id ="moveResult">
+    
+        </p>
+        <P class="score" id="score">
+    
+        </P>
+    </div>
+    <button type="reset" id = "resetButton" onclick="resetScore();">Reset Score</button>
+    <footer>
+        <p>Developed by Hemanth Yadav</p>
+    </footer>
+    <script>
+        let score = {
+            player: 0,
+            computer: 0,
+            tie:0
+        };
+        const savedScore = 
+        JSON.parse(localStorage.getItem(`score`));
+        if(savedScore) {
+            score = savedScore;
+            }
+        let choices = ['rock', 'paper', 'scissors'];
+        function moveCheck(playerchoice){
+            const playermove = playerchoice;
+            const move = computerMove();
+            let result ='';
+            if(playermove === 'rock'){
+                if('rock' === move) result = 'Tie';
+                else if('paper'=== move) result = 'you lose';
+                else result= 'you win';
+            }
+            else if(playermove === 'paper'){
+                if('paper' === move) result = 'Tie';
+                else if('scissors'=== move) result = 'you lose';
+                else result= 'you win';
+            }
+            else if(playermove === 'scissors'){
+                if('scissors' === move) result = 'Tie';
+                else if('rock'=== move) result = 'you lose';
+                else result= 'you win';
+            }else {
+                result = 'Invalid Move';
+            }
+            if(result === 'you win') score.player +=1;
+            else if(result === 'you lose') score.computer +=1;
+            else if(result === 'Tie') score.tie +=1;
+            document.getElementById('moveResult').innerHTML = 
+            `You   <img src="images/${playermove}-emoji.png" alt="${playermove}-Image" class="move-icon">
+               <img src="images/${move}-emoji.png" alt="${move}-Image" class="move-icon">
+            Computer`
+
+            document.getElementById('result').innerHTML = result;
+
+            updateScoreElement();
+            localStorage.setItem('score',JSON.stringify(score));
+        }
+        function computerMove(){
+            let computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            return computerChoice;
+        }
+        function resetScore(){
+            score = {
+                player: 0,
+                computer: 0,
+                tie:0
+            }
+                updateScoreElement();
+                localStorage.removeItem(`score`);
+            }
+            function updateScoreElement(){
+                document.getElementById('score').innerHTML = `Player Score: ${score.player}
+                Computer Score: ${score.computer} Tie Score: ${score.tie}`;
+            }
+        
+    </script>
+</body>
+</html>
